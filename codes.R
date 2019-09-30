@@ -112,7 +112,7 @@ FD_MLE = function(q, data ,Dij){
 #' @param q a numeric or a vector of diversity order; The suggested range for q is [0, 3].
 #' @param data a S*N matrix of species sample frequencies with S species (rows), N communities (columns).
 #' @param dij a matrix of distance matrix.
-#' @param CU a character to choose method, "C" for 1-CqN ; "U" for 1-UqN.
+#' @param CU a character to choose method, "C" for 1-CqN (Sorensen) ; "U" for 1-UqN (Jaccard).
 #' @param method a character to choose method, "relative" or "absolute".
 #' @return a numerical vector of functional dissimilarity.
 FD_Beta = function(q, data, dij, CU, method){
@@ -624,7 +624,8 @@ beta_diversity_MLE <- function(q, data, CU, method){
 }
 
 #### Plot Appendix S5: Figure S1
-#B is the number of replication times for each point on x-axis. You can reduce the computation time by choosing a smaller B.
+#B is the number of combinations of sites for each chosen number of point on x-axis. 
+#If the number of combinations exceeds 100, then cut off at B = 500
 B <- 500
 #((a) Sorensen dissimilarity measure) Compare all, Restoration Fragments base on established, 1-CqN, relative
 result.ALL_established5 = sapply(2:32, function(x) {

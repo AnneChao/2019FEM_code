@@ -383,7 +383,7 @@ outpout_reg = iNEXT(x = data_reg,q = c(0,1,2),datatype = "incidence_freq")
 p_inext(x = outpout_est)
 p_inext(x = outpout_reg)
 
-####Plot Fig S6: Figure S2
+####Plot Appendix S6: Figure S2
 #B is the number of combinations of sites for each chosen number of point on x-axis. 
 #If the number of combinations exceeds 100, then cut off at B = 100
 B = 100                                          

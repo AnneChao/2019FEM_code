@@ -79,9 +79,9 @@ cppFunction(
   return(temp);
   }")
 
-#-----------------------------------------------
-# Functional diversity (MLE:empirical)
-#-----------------------------------------------
+#------------------------------------------------------------------------------
+# Functional diversity (MLE:empirical) See Chiu and Chao (2014, Plos One) paper
+#-------------------------------------------------------------------------------
 #' FD_MLE(q, data, Dij) is a function which computes FD of order q based on abundance data.
 #' @param q a numeric or a vector of diversity order. The suggested range for q is [0, 3].
 #' @param data a vector of species sample frequencies.
@@ -105,9 +105,9 @@ FD_MLE = function(q, data ,Dij){
   sapply(q, Emp)
 }
 
-#-----------------------------------------------
-# Functional dissimilarity (empirical)
-#-----------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# Functional dissimilarity (empirical) See Chiu and Chao (2014, Plos One) paper with modification
+#------------------------------------------------------------------------------------------------
 #' FD_Beta(q, data, dij, CU, method) is a function which computes functional dissimilarity measure of order q based on abundance data.
 #' @param q a numeric or a vector of diversity order; The suggested range for q is [0, 3].
 #' @param data a S*N matrix of species sample frequencies with S species (rows), N communities (columns).
@@ -147,9 +147,9 @@ FD_Beta = function(q, data, dij, CU, method){
   out
 }
 
-#-----------------------------------------------
-# Plot the output of iNEXT function
-#-----------------------------------------------
+#--------------------------------------------------------------------
+# Plot the output of iNEXT function (See Fig. 3 of 2019 FEM) paper
+#--------------------------------------------------------------------
 #' p_inext(x, type, se, facet.var, color.var, grey) is a function to plot the output of iNEXT
 #' @param x is the output of iNEXT function
 p_inext = function (x, type = 1, se = TRUE, facet.var = "order", color.var = "site", grey = FALSE) {
@@ -370,7 +370,7 @@ Get_plot = function(out1, out2, out3, CU, ER, dtype){
   }
 }
 
-####Fig 3.(iNEXT plots)
+####Plot Fig 3. in 2019 FEM paper (based on iNEXT output)
 data_est = data.frame(ALL = c(32,rowSums(Data_established[,3:34]>0)),
                       Rsetoration = c(14,rowSums(Data_established[,21:34]>0)),
                       Fragments = c(18,rowSums(Data_established[,3:20]>0)))
@@ -383,9 +383,10 @@ outpout_reg = iNEXT(x = data_reg,q = c(0,1,2),datatype = "incidence_freq")
 p_inext(x = outpout_est)
 p_inext(x = outpout_reg)
 
-####Fig S6.S2
-#B is the number of replication times for each point on x-axis. You can reduce the computation time by choosing a smaller B.
-B = 100
+####Plot Fig S6: Figure S2
+#B is the number of combinations of sites for each chosen number of point on x-axis. 
+#If the number of combinations exceeds 100, then cut off at B = 100
+B = 100                                          
 #((a) Sorensen-type functional dissimilarity measure) Compare all, Restoration Fragments base on established, 1-CqN, relative.
 result.ALL_established1 = sapply(2:32, function(x) {
   if(choose(n = 32,k = x)>B){
@@ -482,7 +483,7 @@ result.F_regenerating1 = sapply(2:18, function(x) {
   }) %>% rowMeans; })
 Get_plot(result.ALL_regenerating1, result.R_regenerating1, result.F_regenerating1, "C", "R", "Fun")
 
-####Fig 6.
+#### Plot Fig 6. in the main text 
 #((a) Jaccard-type functional dissimilarity measure) Compare All, Restoration Fragments base on established, 1-UqN, relative.
 result.ALL_established2 = sapply(2:32, function(x) {
   if(choose(n = 32,k = x)>B){
@@ -580,7 +581,7 @@ result.F_regenerating2 = sapply(2:18, function(x) {
 Get_plot(result.ALL_regenerating2, result.R_regenerating2, result.F_regenerating2, "U", "R", "Fun")
 
 #-----------------------------------------------
-# Taxonmic diversity (empirical)
+# Taxonmic diversity (empirical Hill numbers)
 #-----------------------------------------------
 #' Diversity_profile_MLE(data, q) is a function which computes taxonmic diversity of order q based on abundance data.
 #' @param data a vector of species sample frequencies.
@@ -596,13 +597,13 @@ Diversity_profile_MLE <- function(data, q){
 
 }
 
-#-----------------------------------------------
-# Taxonmic dissimilarity (empirical)
-#-----------------------------------------------
+#-------------------------------------------------------------------
+# Taxonmic dissimilarity (empirical) See Chao and Chiu (2016, MEE)
+#------------------------------------------------------------------
 #' beta_diversity_MLE(q, data, CU, method) is a function which computes taxonmic dissimilarity measure of order q based on abundance data.
 #' @param q a numeric or a vector of diversity order; The suggested range for q is [0, 3].
 #' @param data a S*N matrix of species sample frequencies with S species, N communities.
-#' @param CU a character to choose method, "C" for 1-CqN ; "U" for 1-UqN.
+#' @param CU a character to choose method, "C" for 1-CqN (Sorensen); "U" for 1-UqN (Jaccard).
 #' @param method a character to choose method, "relative" or "absolute".
 #' @return a numerical vector of taxonmic dissimilarity.
 beta_diversity_MLE <- function(q, data, CU, method){
@@ -622,7 +623,7 @@ beta_diversity_MLE <- function(q, data, CU, method){
   out
 }
 
-####Fig S5.S1
+#### Plot Appendix S5: Figure S1
 #B is the number of replication times for each point on x-axis. You can reduce the computation time by choosing a smaller B.
 B <- 500
 #((a) Sorensen dissimilarity measure) Compare all, Restoration Fragments base on established, 1-CqN, relative
@@ -721,7 +722,7 @@ result.F_regenerating5 = sapply(2:18, function(x) {
   }) %>% rowMeans; })
 Get_plot(result.ALL_regenerating5, result.R_regenerating5, result.F_regenerating5, "C", "R", "Tax")
 
-####Fig 5.
+#### Plot Fig 5. in the main text
 #((a) Jaccard dissimilarity measure) Compare all, Restoration Fragments base on established, 1-UqN, relative
 result.ALL_established6 = sapply(2:32, function(x) {
   if(choose(n = 32,k = x)>B){
